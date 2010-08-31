@@ -4,3 +4,6 @@ develop-eggs
 kecupu.pos.egg-info
 parts
 .installed.cfg
+kecupu/pos/dev_settings.py
+kecupu_dev.db
+local.cfg
