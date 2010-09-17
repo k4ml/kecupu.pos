@@ -5,10 +5,13 @@ admin.autodiscover()
 
 # URL patterns for kecupu.pos
 
-urlpatterns = patterns('kecupu.pos.views',
+urlpatterns = patterns('',
   # Add url patterns here
   # TODO: This should include from kecupu.pos.app_urls
-  (r'^$', 'index'),
+  (r'^', include('kecupu.pos.app_urls')),
+)
+
+urlpatterns += patterns('',
   (r'^admin/', include(admin.site.urls)),
 )
 

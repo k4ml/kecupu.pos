@@ -10,3 +10,11 @@ def index(request):
         {},
         context_instance=RequestContext(request)
     )
+
+@login_required
+def new_order(request):
+    return render_to_response(
+        'kecupu.pos/new_order.html',
+        {},
+        context_instance=RequestContext(request)
+    )
