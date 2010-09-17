@@ -18,6 +18,11 @@
 	<div id="container">
     	<div id="header">
         	<h2>My eCommerce Admin area</h2>
+                {% if user.is_authenticated %}
+                Welcome, {{ user.username }}
+                {% else %}
+                Welcome, please <a href="#">login</a>.
+                {% endif %}
     <div id="topmenu">
             	<ul>
                 	<li class="current"><a href="index.html">Dashboard</a></li>

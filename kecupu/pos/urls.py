@@ -12,6 +12,10 @@ urlpatterns = patterns('kecupu.pos.views',
   (r'^admin/', include(admin.site.urls)),
 )
 
+urlpatterns += patterns('',
+  (r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name': 'kecupu.pos/login.html'}),
+)
+
 if settings.DEBUG:
     urlpatterns += patterns('',
         (r'^media/(?P<path>.*)$', 'django.views.static.serve',
