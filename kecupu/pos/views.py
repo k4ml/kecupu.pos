@@ -13,8 +13,12 @@ def index(request):
 
 @login_required
 def new_order(request):
+    items = (
+        {'id': 1, 'name': 'NW1', 'qty': 2, 'price': 100.0},
+    )
+    items = tuple()
     return render_to_response(
         'kecupu.pos/new_order.html',
-        {},
+        {'items': items},
         context_instance=RequestContext(request)
     )

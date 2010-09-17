@@ -1,5 +1,48 @@
 {% extends "kecupu.pos/base2.html" %}
 
 {% block content %}
-    New order
+    <h2>New order</h2>
+    <div id="order-wrapper">
+        <div id="order-customer">
+            <form>
+                <input type="text" name="customer-id" size="10" />Search customer<br />
+            </form>
+        </div>
+        <div id="order-item-search">
+            <form>
+                <input type="text" name="item-id" size="10" />Search item<br />
+            </form> 
+        </div>
+        <div id="order-item-list">
+            <table id="order-item-list-tbl">
+                <thead>
+                    <tr>
+                        <th style="width: 10%">Remove</th>
+                        <th style="width: 40%">Item Name</th>
+                        <th style="width: 10%">Price</th>
+                        <th style="width: 10%">Qty</th>
+                        <th style="width: 10%">Total</th>
+                        <th style="width: 10%">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td></td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.qty }}</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" align="center">No items in cart</td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

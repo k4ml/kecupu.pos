@@ -25,3 +25,17 @@
 .content {
     padding-top: 5px;
 }
+
+#order-customer {
+    background: #ede;
+    padding-bottom: 1px;
+}
+
+#order-item-search {
+    background: #ddd;
+    padding-bottom: 3px;
+}
+
+#order-item-list-tbl {
+    width: 100%;
+}
