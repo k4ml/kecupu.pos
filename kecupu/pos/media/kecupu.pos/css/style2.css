@@ -1,0 +1,27 @@
+#hd {
+    background: #bdc;
+}
+
+.right-bar {
+    background: #bdc;
+    padding: 3px;
+}
+
+.site-title {
+}
+
+.clear {
+    clear: both;
+}
+
+.welcome-user {
+    background: #7b8;
+}
+
+.right {
+    text-align: right;
+}
+
+.content {
+    padding-top: 5px;
+}

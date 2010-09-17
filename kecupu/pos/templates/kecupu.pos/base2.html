@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="keywords" content="">
+<meta name="description" content="">
+<title>CSS Layout</title>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}kecupu.pos/css/reset-fonts-grids.css">
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}kecupu.pos/css/base.css">
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}kecupu.pos/css/style2.css">
+</head>
+<body>
+<div id="doc3" class="yui-t4">
+    <div id="hd">
+        <!-- PUT MASTHEAD CODE HERE -->
+        <h1 class="site-title">kecupu.pos</h1>
+        <div class="welcome-user">
+            <div class="right">
+            {% if user.is_authenticated %}
+                Welcome, {{ user.username }} [<a href="{% url django.contrib.auth.views.logout_then_login %}">logout</a>]
+            {% else %}
+                Welcome new user, <a href="{% url django.contrib.auth.views.login %}">login</a>.
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <div id="bd">
+        <div id="yui-main">
+	    <div class="yui-b">
+	        <!-- PUT MAIN COLUMN CODE HERE -->
+                <div class="content">
+                {% block content %}
+                {% endblock %}
+                </div>
+	    </div>
+        </div>
+	<div class="yui-b right-bar">
+	    <!-- PUT SECONDATY COLUMN CODE HERE -->
+            <h2>Info</h2>
+	</div>
+	</div>
+    <div id="ft">
+	<!-- PUT FOOTER CODE HERE -->
+    </div>
+</div>
+</body>
+</html>
