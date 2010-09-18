@@ -24,3 +24,16 @@ class Item(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Order(models.Model):
+    created = models.DateField(auto_now_add=True)
+    modified = models.DateField(auto_now=True)
+    customer = models.ForeignKey(Customer)
+    items = models.ManyToManyField(Item, through='OrderItem')
+    total = models.FloatField()
+    store = models.ForeignKey(Store)
+
+class OrderItem(models.Model):
+    item = models.ForeignKey(Item)
+    order = models.ForeignKey(Order)
+    qty = models.IntegerField()

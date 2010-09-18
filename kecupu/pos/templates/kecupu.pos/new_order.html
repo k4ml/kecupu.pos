@@ -5,13 +5,14 @@
     <div id="order-wrapper">
         <form action="{% url kecupu.pos.views.new_order %}" method="post">
         <div id="order-customer">
-                <input type="text" name="customer-id" size="10" id="txt-customer-search" />Search customer<br />
+                <input type="text" name="customer-id" size="10" id="txt-customer-search" value="{{ order.customer.id }}-{{ order.customer.name }}" />Search customer<br />
         </div>
         <div id="order-item-search">
                 <input type="text" name="item-id" size="10" id="txt-item-search" />Search item &nbsp;
                 Qty <input type="text" name="item-qty" size="2" />&nbsp;
                 <input type="submit" name="item-submit" value="Add Item" />
         </div>
+        <input type="hidden" name="order-id" value="{{ order.id }}" />
         </form> 
         <div id="order-item-list">
             <table id="order-item-list-tbl">
@@ -29,8 +30,8 @@
                 {% for item in items %}
                     <tr>
                         <td></td>
-                        <td>{{ item.name }}</td>
-                        <td>{{ item.price }}</td>
+                        <td>{{ item.item.name }}</td>
+                        <td>{{ item.item.price }}</td>
                         <td>{{ item.qty }}</td>
                         <td></td>
                         <td></td>
