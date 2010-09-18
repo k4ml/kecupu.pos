@@ -16,3 +16,11 @@ class Store(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class Item(models.Model):
+    name = models.CharField(max_length=255)
+    price = models.FloatField()
+    store = models.ForeignKey(Store)
+
+    def __unicode__(self):
+        return self.name

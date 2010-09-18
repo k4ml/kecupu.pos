@@ -37,3 +37,16 @@ def customer_autocomplete(request):
         for customer in customers:
             output.append({"id": customer.id, "value": customer.id, "label": customer.name})
         return HttpResponse(simplejson.dumps(output), mimetype='application/json')
+
+@login_required
+def item_autocomplete(request):
+    if 'term' in request.GET:
+        keyword = request.GET['term']
+        from kecupu.pos.models import Item
+        import simplejson
+
+        items = Item.objects.filter(name__icontains=keyword)
+        output = []
+        for item in items:
+            output.append({"id": item.id, "value": item.id, "label": item.name})
+        return HttpResponse(simplejson.dumps(output), mimetype='application/json')

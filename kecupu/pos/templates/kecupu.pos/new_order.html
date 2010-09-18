@@ -3,16 +3,16 @@
 {% block content %}
     <h2>New order</h2>
     <div id="order-wrapper">
+        <form action="{% url kecupu.pos.views.new_order %}" method="post">
         <div id="order-customer">
-            <form>
                 <input type="text" name="customer-id" size="10" id="txt-customer-search" />Search customer<br />
-            </form>
         </div>
         <div id="order-item-search">
-            <form>
-                <input type="text" name="item-id" size="10" />Search item<br />
-            </form> 
+                <input type="text" name="item-id" size="10" id="txt-item-search" />Search item &nbsp;
+                Qty <input type="text" name="item-qty" size="2" />&nbsp;
+                <input type="submit" name="item-submit" value="Add Item" />
         </div>
+        </form> 
         <div id="order-item-list">
             <table id="order-item-list-tbl">
                 <thead>
@@ -45,4 +45,7 @@
             </table>
         </div>
     </div>
+    <pre>
+    {{ request.POST }}
+    </pre>
 {% endblock %}
