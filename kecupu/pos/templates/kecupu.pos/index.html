@@ -1,5 +1,12 @@
 {% extends "kecupu.pos/base2.html" %}
 
 {% block content %}
-    Note that the default settings.py file created by django-admin.py startproject includes 'django.contrib.auth' and 'django.contrib.contenttypes' in INSTALLED_APPS for convenience. If your INSTALLED_APPS already contains these apps, feel free to run manage.py syncdb again; you can run that command as many times as you’d like, and each time it’ll only install what’s needed.
+    <b>{{ request.session.store_id }}</b>
+    <ul>
+    {% for store in stores %}
+        <li>{{ store.name }}</li>
+    {% endfor %}
+    </ul>
+    <pre>
+    </pre>
 {% endblock %}

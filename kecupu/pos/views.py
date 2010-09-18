@@ -1,14 +1,14 @@
 # Create your views here.
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
+from kecupu.pos.utils import render_response, login_required
 
 @login_required
 def index(request):
-    return render_to_response(
+    stores = tuple()
+    return render_response(
+        request,
         'kecupu.pos/index.html',
-        {},
-        context_instance=RequestContext(request)
+        {'stores': stores}
     )
 
 @login_required
@@ -19,6 +19,5 @@ def new_order(request):
     items = tuple()
     return render_to_response(
         'kecupu.pos/new_order.html',
-        {'items': items},
-        context_instance=RequestContext(request)
+        {'items': items}
     )

@@ -17,7 +17,7 @@
         <div class="welcome-user">
             <div class="right">
             {% if user.is_authenticated %}
-                Welcome, {{ user.username }} [<a href="{% url django.contrib.auth.views.logout_then_login %}">logout</a>]
+                Welcome, {{ user.username }} [<a href="{% url logout_then_login %}">logout</a>]
             {% else %}
                 Welcome new user, <a href="{% url django.contrib.auth.views.login %}">login</a>.
             {% endif %}
