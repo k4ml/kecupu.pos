@@ -1,7 +1,6 @@
 {% extends "kecupu.pos/base2.html" %}
 
 {% block content %}
-    <b>{{ request.session.store_id }}</b>
     <ul>
     {% for store in stores %}
         <li>{{ store.name }}</li>

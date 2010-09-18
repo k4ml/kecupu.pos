@@ -17,7 +17,8 @@ def new_order(request):
         {'id': 1, 'name': 'NW1', 'qty': 2, 'price': 100.0},
     )
     items = tuple()
-    return render_to_response(
+    return render_response(
+        request,
         'kecupu.pos/new_order.html',
         {'items': items}
     )

@@ -36,7 +36,10 @@
         </div>
 	<div class="yui-b right-bar">
 	    <!-- PUT SECONDATY COLUMN CODE HERE -->
+            {% if user.is_authenticated %}
             <h2>Info</h2>
+            Store name: {{ store.name }}
+            {% endif %}
 	</div>
 	</div>
     <div id="ft">
