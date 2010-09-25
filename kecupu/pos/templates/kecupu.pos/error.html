@@ -1,0 +1,10 @@
+{% extends "kecupu.pos/base2.html" %}
+
+{% block content %}
+<h1>Error happened !!</h1>
+<ul>
+{% for error in errors %}
+    <li>{{ error }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
