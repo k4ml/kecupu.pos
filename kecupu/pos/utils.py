@@ -10,6 +10,12 @@ def login_required(func):
     @login_required_orig
     def decorator(request, *args, **kwargs):
         stores = request.user.store_set.all()
+        if not stores:
+            return render_response(
+                request, 
+                'kecupu.pos/error.html',
+                {'errors': ['No store id',]}
+            )
         if len(stores) == 1:
             request.session['store_id'] = stores[0].id
         return func(request, *args, **kwargs)
