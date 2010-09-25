@@ -1,7 +1,8 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
+from django.core.urlresolvers import reverse
 
 from kecupu.pos.utils import render_response, login_required
 from kecupu.pos.models import Customer, Order, OrderItem
@@ -33,6 +34,7 @@ def new_order(request):
         order.save()
         order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty)
         order_item.save()
+        return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 
     items = tuple()
     return render_response(
