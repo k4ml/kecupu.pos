@@ -10,6 +10,7 @@ admin.site.register(Customer, CustomerAdmin)
 
 class StoreAdmin(admin.ModelAdmin):
     pass
+admin.site.register(Store, StoreAdmin)
 
 class ItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'store')
