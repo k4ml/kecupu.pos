@@ -8,6 +8,16 @@ class CustomerAdmin(ButtonableModelAdmin):
     list_display = ('name', 'address')
     search_fields = ['name']
 
+    fieldsets = (
+        (None, {
+            'fields': ('name',)
+        }),
+        ('Customer Details', {
+            'classes': ('collapse',),
+            'fields': ('address',)
+        })
+    )
+
     def list_orders(self, request, obj):
         pass
     list_orders.short_description = 'Orders'
