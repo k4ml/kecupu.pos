@@ -20,3 +20,8 @@ from kecupu.pos.settings import *
 
 DATABASE_NAME = 'kecupu_dev.db'
 ^D
+
+$ python bootstrap.py
+$ ./bin/buildout -c local.cfg -v
+$ ./bin/django syncdb
+$ ./bin/django runserver_plus
