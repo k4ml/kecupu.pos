@@ -19,7 +19,7 @@ class Store(models.Model):
 
 class Item(models.Model):
     name = models.CharField(max_length=255)
-    price = models.FloatField()
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     store = models.ForeignKey(Store)
 
     def __unicode__(self):
@@ -30,7 +30,7 @@ class Order(models.Model):
     modified = models.DateField(auto_now=True)
     customer = models.ForeignKey(Customer)
     items = models.ManyToManyField(Item, through='OrderItem')
-    total = models.FloatField()
+    total = models.DecimalField(max_digits=7, decimal_places=2, blank=True)
     store = models.ForeignKey(Store)
 
 class OrderItem(models.Model):
