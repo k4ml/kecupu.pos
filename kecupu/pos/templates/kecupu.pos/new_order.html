@@ -31,9 +31,9 @@
                     <tr>
                         <td></td>
                         <td>{{ item.item.name }}</td>
-                        <td align="right">{{ item.item.price }}</td>
+                        <td align="right">{{ item.item.price|floatformat:2 }}</td>
                         <td align="center">{{ item.qty }}</td>
-                        <td align="right">{{ item.item.price|mult:item.qty }}</td>
+                        <td align="right">{{ item.item.price|mult:item.qty|floatformat:2 }}</td>
                     </tr>
                 {% empty %}
                     <tr>
