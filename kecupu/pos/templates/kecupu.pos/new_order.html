@@ -26,13 +26,14 @@
                     </tr>
                 </thead>
                 <tbody>
+                {% load pos_filters %}
                 {% for item in items %}
                     <tr>
                         <td></td>
                         <td>{{ item.item.name }}</td>
                         <td align="right">{{ item.item.price }}</td>
                         <td align="center">{{ item.qty }}</td>
-                        <td align="right"></td>
+                        <td align="right">{{ item.item.price|mult:item.qty }}</td>
                     </tr>
                 {% empty %}
                     <tr>
