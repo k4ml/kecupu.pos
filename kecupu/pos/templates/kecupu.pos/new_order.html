@@ -3,17 +3,16 @@
 {% block content %}
     <h2>New order</h2>
     <div id="order-wrapper">
-        <form action="{% url kecupu.pos.views.new_order %}" method="post">
         <div id="order-customer">
-                <input type="text" name="customer-id" size="10" id="txt-customer-search" value="{{ order.customer.id }}-{{ order.customer.name }}" />Search customer<br />
+            {% if order.customer %}
+            Customer ID: #{{ order.customer.id }} {{ order.customer.name }}
+            {% else %}
+            <form action="" method="post">
+               Customer name: <input type="text" name="customer-id" size="10" id="txt-customer-search" value="" />
+                <input type="submit" name="submit-customer" value="Create order" />
+            </form> 
+            {% endif %}
         </div>
-        <div id="order-item-search">
-                <input type="text" name="item-id" size="10" id="txt-item-search" />Search item &nbsp;
-                Qty <input type="text" name="item-qty" size="2" />&nbsp;
-                <input type="submit" name="item-submit" value="Add Item" />
-        </div>
-        <input type="hidden" name="order-id" value="{{ order.id }}" />
-        </form> 
         <div id="order-item-list">
             <table id="order-item-list-tbl">
                 <thead>
@@ -55,6 +54,16 @@
                 </tbody>
             </table>
         </div>
+        {% if order %}
+        <div id="order-item-search">
+            <form name="order-item" action="{% url kecupu.pos.views.add_order_item order.id %}" method="post">
+                Item name: <input type="text" name="item-id" size="10" id="txt-item-search" />
+                Qty <input type="text" name="item-qty" size="2" />&nbsp;
+                <input type="submit" name="item-submit" value="Add Item" />
+            </form>
+        </div>
+        {% endif %}
+        <input type="hidden" name="order-id" value="{{ order.id }}" />
     </div>
     <pre>
     {{ request.POST }}

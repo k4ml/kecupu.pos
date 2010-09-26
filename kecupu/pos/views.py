@@ -1,11 +1,15 @@
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect
+from django.http import HttpResponse, HttpResponseRedirect, \
+    HttpResponseNotAllowed
+from django.shortcuts import redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 
 from kecupu.pos.utils import render_response, login_required
 from kecupu.pos.models import Customer, Order, OrderItem
+
+def _go_to_current_order(request, order):
+    return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 
 @login_required
 def index(request):
@@ -18,24 +22,13 @@ def index(request):
 
 @login_required
 def new_order(request):
-    store_id = request.session['store_id']
     if request.method == 'POST':
+        store_id = request.session['store_id']
         customer_id = request.POST['customer-id'].split("-")[0]
-        item_id = request.POST['item-id'].split("-")[0]
-        qty = request.POST['item-qty']
-        order_id = request.POST['order-id']
-
-        customer = Customer.objects.get(pk=customer_id)
-
-        if order_id:
-            order = Order.objects.get(pk=order_id)
-        else:
-            order = Order(customer=customer, total=1, store_id = store_id)
+        customer = get_object_or_404(Customer, pk=customer_id)
+        order = Order(customer=customer, total=1, store_id = store_id)
         order.save()
-        order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty)
-        order_item.save()
-        return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
-
+        return _go_to_current_order(request, order)
     items = tuple()
     return render_response(
         request,
@@ -43,6 +36,19 @@ def new_order(request):
         {'items': items}
     )
 
+@login_required
+def add_order_item(request, order_id):
+    if request.method == 'POST':
+        item_id = request.POST['item-id'].split("-")[0]
+        qty = request.POST['item-qty']
+
+        order = get_object_or_404(Order, pk=order_id)
+        order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty)
+        order_item.save()
+        return _go_to_current_order(request, order)
+    return HttpResponseNotAllowed(['POST'])
+
+@login_required
 def current_order(request, id=None):
     items = tuple()
     if id is not None:
@@ -54,6 +60,14 @@ def current_order(request, id=None):
         {'items': items, 'order': order,}
     )
     
+def update_order(request, id=None):
+    order = get_object_or_404(Order, pk=id)
+
+    if request.method == 'POST':
+        return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
+
+    return HttpResponseNotAllowed(['POST'])
+
 
 @login_required
 def customer_autocomplete(request):
