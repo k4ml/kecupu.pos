@@ -13,7 +13,9 @@
             </form> 
             {% endif %}
         </div>
+        {% if order %}
         <div id="order-item-list">
+            <form name="order-item-list" action="{% url kecupu.pos.views.update_order order.id %}" method="post">
             <table id="order-item-list-tbl">
                 <thead>
                     <tr>
@@ -28,10 +30,12 @@
                 {% load pos_filters %}
                 {% for item in items %}
                     <tr>
-                        <td></td>
+                        <td align="center"><input type="checkbox" name="item-remove-{{ item.item.id }}" value="1" /></td>
                         <td>{{ item.item.name }}</td>
                         <td align="right">{{ item.item.price|floatformat:2 }}</td>
-                        <td align="center">{{ item.qty }}</td>
+                        <td align="center">
+                            <input type="text" name="item-qty-{{ item.item.id }}" value="{{ item.qty }}" size="2" />
+                        </td>
                         <td align="right">{{ item.item.price|mult:item.qty|floatformat:2 }}</td>
                     </tr>
                 {% empty %}
@@ -40,12 +44,14 @@
                     </tr>
                 {% endfor %}
                     <tr>
-                        <td colspan="4" align="right">Discount</td>
+                        <td colspan="4" align="right">Sub-total</td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td colspan="4" align="right">Sub-total</td>
-                        <td></td>
+                        <td colspan="4" align="right">Discount</td>
+                        <td align="right">
+                            <input type="text" name="item-discount" value="" size="2" />
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="4" align="right">Total</td>
@@ -53,10 +59,14 @@
                     </tr>
                 </tbody>
             </table>
+            <div align="right">
+                <input type="submit" name="item-update" value="Update" />
+                <input type="submit" name="item-submit" value="Submit Order" />
+            </div>
+            </form>
         </div>
-        {% if order %}
         <div id="order-item-search">
-            <form name="order-item" action="{% url kecupu.pos.views.add_order_item order.id %}" method="post">
+            <form name="order-item-add" action="{% url kecupu.pos.views.add_order_item order.id %}" method="post">
                 Item name: <input type="text" name="item-id" size="10" id="txt-item-search" />
                 Qty <input type="text" name="item-qty" size="2" />&nbsp;
                 <input type="submit" name="item-submit" value="Add Item" />

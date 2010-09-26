@@ -52,7 +52,7 @@ def add_order_item(request, order_id):
 def current_order(request, id=None):
     items = tuple()
     if id is not None:
-        order = Order.objects.get(pk=id)
+        order = get_object_or_404(Order, pk=id)
         items = OrderItem.objects.filter(order__id=id)
     return render_response(
         request,
@@ -60,10 +60,19 @@ def current_order(request, id=None):
         {'items': items, 'order': order,}
     )
     
+@login_required
 def update_order(request, id=None):
     order = get_object_or_404(Order, pk=id)
 
     if request.method == 'POST':
+        for item in order.items.all():
+            remove = request.POST.get('item-remove-%s' % item.id)
+            if remove:
+                OrderItem.objects.filter(item__id__exact=item.id, order__id__exact=order.id).delete()
+            qty = request.POST.get('item-qty-%s' % item.id)
+            if qty:
+                OrderItem.objects.filter(item__id__exact=item.id, order__id__exact=order.id).update(qty=qty)
+
         return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 
     return HttpResponseNotAllowed(['POST'])
