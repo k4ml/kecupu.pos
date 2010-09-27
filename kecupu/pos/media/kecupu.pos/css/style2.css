@@ -32,7 +32,7 @@
 }
 
 #order-item-search {
-    background: #ddd;
+    margin-top: 3px;
     padding-bottom: 3px;
 }
 
@@ -71,4 +71,14 @@ div.content-wrapper {
     color: #9F6000;
     background-color: #FEEFB3;
     background-image: url('warning.png');
+}
+
+fieldset {
+    border: 1px solid;
+    padding: 1em;
+}
+
+legend {
+    padding: 0.2em 0.5em;
+    border: 1px solid;
 }

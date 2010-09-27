@@ -73,13 +73,16 @@
             </div>
             </form>
         </div>
-        <div id="order-item-search">
-            <form name="order-item-add" action="{% url kecupu.pos.views.add_order_item order.id %}" method="post">
-                Item name: <input type="text" name="item-id" size="10" id="txt-item-search" />
-                Qty <input type="text" name="item-qty" size="2" />&nbsp;
-                <input type="submit" name="item-submit" value="Add Item" />
-            </form>
-        </div>
+            <fieldset>
+            <legend>Add new item</legend>
+                <div id="order-item-search">
+                    <form name="order-item-add" action="{% url kecupu.pos.views.add_order_item order.id %}" method="post">
+                        Item name: <input type="text" name="item-id" size="10" id="txt-item-search" />
+                        Qty <input type="text" name="item-qty" size="2" />&nbsp;
+                        <input type="submit" name="item-submit" value="Add Item" />
+                    </form>
+                </div>
+            </fieldset>
         {% endif %}
         <input type="hidden" name="order-id" value="{{ order.id }}" />
     </div>
