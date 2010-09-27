@@ -73,7 +73,7 @@ def current_order(request, id=None):
     return render_response(
         request,
         'kecupu.pos/new_order.html',
-        {'items': items, 'order': order,}
+        {'items': items, 'order': order}
     )
     
 @login_required

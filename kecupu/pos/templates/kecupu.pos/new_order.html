@@ -1,11 +1,15 @@
 {% extends "kecupu.pos/base2.html" %}
 
+{% block page_title %}
+<h2>Order #{{ order.id }}</h2>
+{% endblock %}
+
 {% block content %}
-    <h2>New order</h2>
     <div id="order-wrapper">
         <div id="order-customer">
             {% if order.customer %}
             Customer ID: #{{ order.customer.id }} {{ order.customer.name }}
+            [<a href="{% url kecupu.pos.views.orders %}?customer-id={{ order.customer.id }}">Show all orders</a>]
             {% else %}
             <form action="" method="post">
                Customer name: <input type="text" name="customer-id" size="10" id="txt-customer-search" value="" />
