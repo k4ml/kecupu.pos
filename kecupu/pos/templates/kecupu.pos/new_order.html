@@ -1,7 +1,11 @@
 {% extends "kecupu.pos/base2.html" %}
 
 {% block page_title %}
+{% if order %}
 <h2>Order #{{ order.id }}</h2>
+{% else %}
+<h2>New Order</h2>
+{% endif %}
 {% endblock %}
 
 {% block content %}
