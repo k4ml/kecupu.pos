@@ -2,11 +2,14 @@
 
 {% block content %}
 <h2>All orders</h2>
-<div class="content">
+<div class="content-wrapper">
     <form action="" method="get">
        Customer name: <input type="text" name="customer-id" size="20" id="txt-customer-search" value="" />
         <input type="submit" name="submit-customer" value="Show Orders" />
-    </form> 
+    </form>
+</div>
+<div class="content-wrapper">
+    {% if orders %}
     <table border="1">
         <thead>
             <tr>
@@ -27,5 +30,11 @@
             {% endfor %}
         </tbody>
     </table>
+    {% endif %}
+    {% if error %}
+    <div class="error">
+        No order found.
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

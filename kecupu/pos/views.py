@@ -14,14 +14,17 @@ def _go_to_current_order(request, order):
 def orders(request):
     customer_id = None
     orders = ()
+    error = None
     if 'customer-id' in request.GET:
         customer_id = request.GET.get('customer-id').split("-")[0]
     if customer_id:
         orders = Order.objects.filter(customer__id__exact=customer_id)
+        if not orders:
+            error = 'No orders found'
     return render_response(
         request,
         'kecupu.pos/orders.html',
-        {'orders': orders}
+        {'orders': orders, 'error': error}
     )
 
 @login_required
