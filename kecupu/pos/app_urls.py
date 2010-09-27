@@ -2,6 +2,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('kecupu.pos.views',
     (r'^$', 'index'),
+    (r'^orders$', 'orders'),
     (r'^order/new$', 'new_order'),
     (r'^order/(\d+)$', 'current_order'),
     (r'^order/(\d+)/update$', 'update_order'),

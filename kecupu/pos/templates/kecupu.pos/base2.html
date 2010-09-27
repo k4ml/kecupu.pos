@@ -30,6 +30,8 @@
 	    <div class="yui-b">
 	        <!-- PUT MAIN COLUMN CODE HERE -->
                 <div class="content">
+                    <div id="main-nav">
+                    </div>
                 {% block content %}
                 {% endblock %}
                 </div>
@@ -40,6 +42,15 @@
             {% if user.is_authenticated %}
             <h2>Info</h2>
             Store name: {{ store.name }}
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <h2>Main</h2>
+                <ul>
+                    <li><a href="">All Customers</a></li>
+                    <li><a href="{% url kecupu.pos.views.orders %}">All Orders</a></li>
+                    <li><a href="{% url kecupu.pos.views.new_order %}">Create new order</a></li>
+                </ul>
             {% endif %}
 	</div>
 	</div>

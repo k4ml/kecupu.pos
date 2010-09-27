@@ -11,6 +11,19 @@ from kecupu.pos.models import Customer, Order, OrderItem
 def _go_to_current_order(request, order):
     return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 
+def orders(request):
+    customer_id = None
+    orders = ()
+    if 'customer-id' in request.GET:
+        customer_id = request.GET.get('customer-id').split("-")[0]
+    if customer_id:
+        orders = Order.objects.filter(customer__id__exact=customer_id)
+    return render_response(
+        request,
+        'kecupu.pos/orders.html',
+        {'orders': orders}
+    )
+
 @login_required
 def index(request):
     stores = tuple()
