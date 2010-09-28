@@ -37,3 +37,9 @@ class OrderItem(models.Model):
     item = models.ForeignKey(Item)
     order = models.ForeignKey(Order)
     qty = models.IntegerField()
+    price = models.DecimalField(max_digits=7, decimal_places=2)
+    total = models.DecimalField(max_digits=7, decimal_places=2)
+
+    def save(self, *args, **kwargs):
+        self.total = self.price * self.qty
+        super(OrderItem, self).save(*args, **kwargs)

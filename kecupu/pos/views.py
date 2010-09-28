@@ -6,7 +6,7 @@ from django.shortcuts import redirect, get_object_or_404
 from django.core.urlresolvers import reverse
 
 from kecupu.pos.utils import render_response, login_required
-from kecupu.pos.models import Customer, Order, OrderItem
+from kecupu.pos.models import Customer, Order, OrderItem, Item
 
 def _go_to_current_order(request, order):
     return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
@@ -59,21 +59,27 @@ def add_order_item(request, order_id):
         qty = request.POST['item-qty']
 
         order = get_object_or_404(Order, pk=order_id)
-        order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty)
+        item = get_object_or_404(Item, pk=item_id)
+        order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty, price=item.price)
         order_item.save()
         return _go_to_current_order(request, order)
     return HttpResponseNotAllowed(['POST'])
 
 @login_required
 def current_order(request, id=None):
+    from django.db.models import Sum, F
     items = tuple()
+    order_total = {'sum': ''}
+
     if id is not None:
         order = get_object_or_404(Order, pk=id)
         items = OrderItem.objects.filter(order__id=id)
+    if items:
+        order_total = OrderItem.objects.filter(order__id=id).aggregate(sum=Sum('total'))
     return render_response(
         request,
         'kecupu.pos/new_order.html',
-        {'items': items, 'order': order}
+        {'items': items, 'order': order, 'order_total': order_total['sum']}
     )
     
 @login_required
@@ -81,13 +87,14 @@ def update_order(request, id=None):
     order = get_object_or_404(Order, pk=id)
 
     if request.method == 'POST':
-        for item in order.items.all():
+        for item in order.orderitem_set.all():
             remove = request.POST.get('item-remove-%s' % item.id)
             if remove:
-                OrderItem.objects.filter(item__id__exact=item.id, order__id__exact=order.id).delete()
+                item.delete()
             qty = request.POST.get('item-qty-%s' % item.id)
             if qty:
-                OrderItem.objects.filter(item__id__exact=item.id, order__id__exact=order.id).update(qty=qty)
+                item.qty = int(qty)
+            item.save()
 
         return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 
