@@ -36,15 +36,15 @@
                 </thead>
                 <tbody>
                 {% load pos_filters %}
-                {% for item in items %}
+                {% for orderitem in orderitems %}
                     <tr>
-                        <td align="center"><input type="checkbox" name="item-remove-{{ item.item.id }}" value="1" /></td>
-                        <td>{{ item.item.name }}</td>
-                        <td align="right">{{ item.item.price|floatformat:2 }}</td>
+                        <td align="center"><input type="checkbox" name="item-remove-{{ orderitem.id }}" value="1" /></td>
+                        <td>{{ orderitem.item.name }}</td>
+                        <td align="right">{{ orderitem.price|floatformat:2 }}</td>
                         <td align="center">
-                            <input type="text" name="item-qty-{{ item.item.id }}" value="{{ item.qty }}" size="2" />
+                            <input type="text" name="item-qty-{{ orderitem.id }}" value="{{ orderitem.qty }}" size="2" />
                         </td>
-                        <td align="right">{{ item.total|floatformat:2 }}</td>
+                        <td align="right">{{ orderitem.total|floatformat:2 }}</td>
                     </tr>
                 {% empty %}
                     <tr>
@@ -53,7 +53,7 @@
                 {% endfor %}
                     <tr>
                         <td colspan="4" align="right">Sub-total</td>
-                        <td align="right">{{ order_total }}</td>
+                        <td align="right">{{ order.total }}</td>
                     </tr>
                     <tr>
                         <td colspan="4" align="right">Discount</td>
@@ -63,7 +63,7 @@
                     </tr>
                     <tr>
                         <td colspan="4" align="right">Total</td>
-                        <td align="right">{{ order_total }}</td>
+                        <td align="right">{{ order.total }}</td>
                     </tr>
                 </tbody>
             </table>

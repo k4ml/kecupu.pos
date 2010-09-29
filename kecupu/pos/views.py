@@ -68,18 +68,16 @@ def add_order_item(request, order_id):
 @login_required
 def current_order(request, id=None):
     from django.db.models import Sum, F
-    items = tuple()
-    order_total = {'sum': ''}
+    orderitems = tuple()
 
     if id is not None:
         order = get_object_or_404(Order, pk=id)
-        items = OrderItem.objects.filter(order__id=id)
-    if items:
-        order_total = OrderItem.objects.filter(order__id=id).aggregate(sum=Sum('total'))
+        orderitems = order.orderitem_set.all()
+        order.save()
     return render_response(
         request,
         'kecupu.pos/new_order.html',
-        {'items': items, 'order': order, 'order_total': order_total['sum']}
+        {'orderitems': orderitems, 'order': order,}
     )
     
 @login_required
@@ -87,14 +85,15 @@ def update_order(request, id=None):
     order = get_object_or_404(Order, pk=id)
 
     if request.method == 'POST':
-        for item in order.orderitem_set.all():
-            remove = request.POST.get('item-remove-%s' % item.id)
+        for orderitem in order.orderitem_set.all():
+            remove = request.POST.get('item-remove-%s' % orderitem.id)
             if remove:
-                item.delete()
-            qty = request.POST.get('item-qty-%s' % item.id)
+                orderitem.delete()
+            qty = request.POST.get('item-qty-%s' % orderitem.id)
             if qty:
-                item.qty = int(qty)
-            item.save()
+                orderitem.qty = int(qty)
+                orderitem.save()
+        order.save()
 
         return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 

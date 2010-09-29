@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#from kecupu.pos.exceptions import NullTotalException
+
 # Create your models here.
 
 class Customer(models.Model):
@@ -30,8 +32,15 @@ class Order(models.Model):
     modified = models.DateField(auto_now=True)
     customer = models.ForeignKey(Customer)
     items = models.ManyToManyField(Item, through='OrderItem')
-    total = models.DecimalField(max_digits=7, decimal_places=2, blank=True)
+    total = models.DecimalField(max_digits=7, decimal_places=2, blank=True, null=True)
     store = models.ForeignKey(Store)
+
+    def save(self, *args, **kwargs):
+        if len(self.orderitem_set.all()) == 0:
+            self.total = 0
+        else:
+            self.total = reduce((lambda x,y: x+y), [orderitem.total for orderitem in self.orderitem_set.all()])
+        super(Order, self).save(*args, **kwargs)
 
 class OrderItem(models.Model):
     item = models.ForeignKey(Item)
@@ -41,5 +50,5 @@ class OrderItem(models.Model):
     total = models.DecimalField(max_digits=7, decimal_places=2)
 
     def save(self, *args, **kwargs):
-        self.total = self.price * self.qty
+        self.total = self.price * int(self.qty)
         super(OrderItem, self).save(*args, **kwargs)
