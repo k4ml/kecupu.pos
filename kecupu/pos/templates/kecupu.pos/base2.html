@@ -32,6 +32,11 @@
                 {% block page_title %}
                 <h2>{{ page_title }}</h2>
                 {% endblock %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
                 <div class="content">
                     <div id="main-nav">
                     </div>

@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, \
     HttpResponseNotAllowed
 from django.shortcuts import redirect, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.contrib import messages
 
 from kecupu.pos.utils import render_response, login_required
 from kecupu.pos.models import Customer, Order, OrderItem, Item
@@ -60,6 +61,12 @@ def add_order_item(request, order_id):
 
         order = get_object_or_404(Order, pk=order_id)
         item = get_object_or_404(Item, pk=item_id)
+
+        if not qty:
+            messages.add_message(request, messages.ERROR, 'Qty field is required')
+            messages.add_message(request, messages.SUCCESS, 'Qty field is required')
+            return _go_to_current_order(request, order)
+
         order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty, price=item.price)
         order_item.save()
         return _go_to_current_order(request, order)

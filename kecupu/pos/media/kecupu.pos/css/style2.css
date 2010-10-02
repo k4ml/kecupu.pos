@@ -55,6 +55,7 @@ div.content-wrapper {
 .error {
     color: #D8000C;
     background-color: #FFBABA;
+    background-image: url('error.png');
 }
 
 .info {
