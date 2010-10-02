@@ -7,7 +7,9 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 
 from kecupu.pos.utils import render_response, login_required
-from kecupu.pos.models import Customer, Order, OrderItem, Item
+from kecupu.pos.models import Customer, Order, OrderItem, Item, \
+    Payment
+    
 
 def _go_to_current_order(request, order):
     return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
@@ -80,10 +82,17 @@ def current_order(request, id=None):
         order = get_object_or_404(Order, pk=id)
         orderitems = order.orderitem_set.all()
         order.save()
+
+        payment = order.payment_set.all()[0]
+
     return render_response(
         request,
         'kecupu.pos/new_order.html',
-        {'orderitems': orderitems, 'order': order,}
+        {
+            'orderitems': orderitems, 
+            'order': order,
+            'payment': payment,
+        }
     )
     
 @login_required
@@ -100,6 +109,35 @@ def update_order(request, id=None):
                 orderitem.qty = int(qty)
                 orderitem.save()
         order.save()
+
+        payment_amount = None
+        payment_method = 'Cash'
+        payment_checque = None
+
+        if 'payment-amount' in request.POST:
+            payment_amount = request.POST.get('payment-amount')
+        if 'payment-checque' in request.POST:
+            payment_checque = request.POST.get('payment-checque')
+        if 'payment-method' in request.POST:
+            payment_method = request.POST.get('payment-method')
+
+
+        if payment_amount:
+            try:
+                float(payment_amount)
+            except ValueError:
+                messages.add_message(request, messages.ERROR, 'Invalid amount')
+                return _go_to_current_order(request, order)
+                
+            if payment_method == 'Cash' and payment_checque:
+                messages.add_message(request, messages.ERROR, 'Please select Cheque as payment method')
+                return _go_to_current_order(request, order)
+            if payment_method == 'Checque' and not payment_checque:
+                messages.add_message(request, messages.ERROR, 'Please enter Checque No')
+                return _go_to_current_order(request, order)
+            payment = Payment.objects.create(order_id=order.id, method=payment_method, checque_no=payment_checque, amount=payment_amount)
+            if payment.save():
+                messages.add_message(request, messages.SUCCESS, 'Payment added')
 
         return HttpResponseRedirect(reverse('kecupu.pos.views.current_order', args=[order.id]))
 

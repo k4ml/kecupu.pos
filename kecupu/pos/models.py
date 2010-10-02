@@ -52,3 +52,11 @@ class OrderItem(models.Model):
     def save(self, *args, **kwargs):
         self.total = self.price * int(self.qty)
         super(OrderItem, self).save(*args, **kwargs)
+
+class Payment(models.Model):
+    order = models.ForeignKey(Order)
+    created = models.DateField(auto_now_add=True)
+    modified = models.DateField(auto_now=True)
+    method = models.CharField(max_length=50)
+    checque_no = models.CharField(max_length=255, blank=True)
+    amount = models.DecimalField(max_digits=7, decimal_places=2)

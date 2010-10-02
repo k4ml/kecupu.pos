@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Add your admin site registrations here, eg.
-from kecupu.pos.models import Customer, Store, Item, Order, OrderItem
+from kecupu.pos.models import Customer, Store, Item, Order, OrderItem, Payment
 from kecupu.pos.admin_utils import ButtonableModelAdmin
 
 class CustomerAdmin(ButtonableModelAdmin):
@@ -37,8 +37,12 @@ class OrderItemInline(admin.TabularInline):
     model = OrderItem
     extra = 1
 
+class PaymentInline(admin.TabularInline):
+    model = Payment
+    extra = 1
+
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'store', 'created')
-    inlines = (OrderItemInline,)
+    inlines = (OrderItemInline, PaymentInline)
     list_filter = ('customer',)
 admin.site.register(Order, OrderAdmin)

@@ -65,6 +65,20 @@
                         <td colspan="4" align="right">Total</td>
                         <td align="right">{{ order.total }}</td>
                     </tr>
+                    <tr>
+                        <td colspan="4" align="right">
+                            Payment &nbsp;
+                            <select name="payment-method">
+                                <option value="Cash">Cash</option>
+                                <option value="Checque">Checque</option>
+                            </select>
+                            &nbsp; Checque No:&nbsp;
+                            <input type="text" name="payment-checque" size="10" value="" />
+                        </td>
+                        <td align="right">
+                            <input type="text" name="payment-amount" size="2" value="{{ payment.amount }}" style="text-align: right;" />
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <div align="right">
