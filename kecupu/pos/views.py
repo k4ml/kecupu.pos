@@ -64,7 +64,6 @@ def add_order_item(request, order_id):
 
         if not qty:
             messages.add_message(request, messages.ERROR, 'Qty field is required')
-            messages.add_message(request, messages.SUCCESS, 'Qty field is required')
             return _go_to_current_order(request, order)
 
         order_item = OrderItem.objects.create(item_id=item_id, order=order, qty=qty, price=item.price)
