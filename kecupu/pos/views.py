@@ -83,7 +83,10 @@ def current_order(request, id=None):
         orderitems = order.orderitem_set.all()
         order.save()
 
-        payment = order.payment_set.all()[0]
+        try:
+            payment = order.payment_set.all()[0]
+        except:
+            payment = {};
 
     return render_response(
         request,
